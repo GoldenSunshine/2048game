@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>2048</title>
+		
+	</head>
+	<style type="text/css">
+		div{margin: 0;padding: 0;}
+		#out{
+			width: 320px;
+			height: 320px;
+			border: 1px solid black;
+			margin: 0 auto 10px;
+		}
+		.con{
+			width: 78px;
+			height: 78px;
+			margin: 1px;
+			background-color: #999;
+			display: inline-block;
+			float: left;
+			font-size: 40px;
+			text-align: center;
+			line-height: 78px;
+		}
+		.content{
+			text-align: center;
+			margin: 0 auto;
+		}
+	</style>
+	<body>
+		<div class="content">
+			<div id="out">
+				<div id="c11" class="con"></div>
+				<div id="c12" class="con"></div>
+				<div id="c13" class="con"></div>
+				<div id="c14" class="con"></div>
+				<div id="c21" class="con"></div>
+				<div id="c22" class="con"></div>
+				<div id="c23" class="con"></div>
+				<div id="c24" class="con"></div>
+				<div id="c31" class="con"></div>
+				<div id="c32" class="con"></div>
+				<div id="c33" class="con"></div>
+				<div id="c34" class="con"></div>
+				<div id="c41" class="con"></div>
+				<div id="c42" class="con"></div>
+				<div id="c43" class="con"></div>
+				<div id="c44" class="con"></div>
+			</div>
+			<button id="btn">开始/重置</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+
+		var data = [];
+		var a ='';
+		var b ='';
+		var condition ='';
+		var left = document.getElementById('btn-left');
+		var right = document.getElementById('btn-lright');
+		var up = document.getElementById('btn-up');
+		var down = document.getElementById('btn-down');
+		var btn = document.getElementById('btn')
+		btn.onclick = function(){
+			map();
+			start();
+			start();
+			view();
+		}
+		//绑定键盘方向键
+		document.onkeyup = function (event) {
+            var e = event || window.event;
+            var keyCode = e.keyCode || e.which;
+            switch (keyCode) {
+                case 38:
+                	if(none()==false){
+                		if(end() == false){
+                			alert('游戏结束，请重新开始');
+                			break;
+                		}
+                	}
+                	moveUp();
+					start();
+					view();
+                    break;
+                case 40:
+                	if(none()==false){
+                		if(end() == false){
+                			alert('游戏结束，请重新开始');
+                			break;
+                		}
+                	}
+                    moveDown();
+					start();
+					view();
+                    break;
+                case 37:
+                	if(none()==false){
+                		if(end() == false){
+                			alert('游戏结束，请重新开始');
+                			break;
+                		}
+                	}
+                    moveLeft();
+					start();
+					view();
+					break;
+				case 39:
+					if(none()==false){
+                		if(end() == false){
+                			alert('游戏结束，请重新开始');
+                			break;
+                		}
+                	}
+                    moveRight();
+					start();
+					view(); 
+					break;
+                default:
+                    break;
+            }
+        }
+		//初始化坐标;
+		function map(){
+			for (var i=0 ;i<4;i++) {
+				data[i] = new Array();
+				for (var j=0;j<4;j++) {
+					data[i][j]=0;
+				}
+			}
+		}
+		//判断是否有空元素
+		function none(){
+			for (var i=0;i<4;i++) {
+				for (var j=0;j<4;j++) {
+					if(data[i][j] == 0){
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		//判断游戏是否结束
+		function end(){
+			var a = 0;
+			var b = 0;
+			for (var i=0;i<4;i++) {
+				a = 0 ;
+				for (var j=0;j<4;j++) {
+					if(data[i][j] != 0){
+						b = data[i][j];
+						if(a == b){
+							return true;
+						}else{
+							a = b;
+						}
+					}
+				}
+			}
+			for (var i=0;i<4;i++) {
+				a = 0 ;
+				for (var j=0;j<4;j++) {
+					if(data[j][i] != 0){
+						b = data[j][i];
+						if(a == b){
+							return true;
+						}else{
+							a = b;
+						}
+					}
+				}
+			}
+			return false;
+		}
+		//在空元素中添加2或4
+		function start(){
+			a = parseInt(Math.random()*4);
+			b = parseInt(Math.random()*4);
+			condition = parseInt(Math.random()*2);
+			if(data[a][b]==0){
+				condition==0?data[a][b]=2:data[a][b]=4;
+			}else{
+				start();
+			}
+		}
+		
+		//二维数组显示在界面上
+		function view(){
+			for (var i=1;i<5;i++) {
+				for (var j=1;j<5;j++) {
+					if(data[i-1][j-1]!=0){
+						document.getElementById('c'+i+j).innerHTML = data[i-1][j-1];
+					}else{
+						document.getElementById('c'+i+j).innerHTML ='';
+					}
+				}
+			}
+		}
+		//向左移动
+		function moveLeft(){
+			for (var i=0;i<4;i++) {
+				for (var j=0;j<4;j++) {
+					if(data[i][j]!=0){
+						for(var k=j;k>0;k--){
+							if(data[i][k-1]==0){
+								data[i][k-1]=data[i][k]
+								data[i][k]=0;
+							}else if(data[i][k]==data[i][k-1]){
+								data[i][k-1] +=data[i][k];
+								data[i][k]=0;
+								if(data[i][k-2] != 0 && k>1){
+									break;
+								}
+							}else if(data[i][k]!=data[i][k-1]){
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		//向上移动
+		function moveUp(){
+			for (var j=0;j<4;j++) {
+				for (var i=0;i<4;i++) {
+					if(data[i][j]!=0){
+						for(var k=i;k>0;k--){
+							if(data[k-1][j]==0){
+								data[k-1][j]=data[k][j]
+								data[k][j]=0;
+							}else if(data[k][j]==data[k-1][j]){
+								data[k-1][j] +=data[k][j];
+								data[k][j]=0;
+								if(k>1){
+									if(data[k-2][j] !=0){
+										break;
+									}
+								}
+							}else if(data[k][j]!=data[k-1][j]){
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		//向右移动
+		function moveRight(){
+			for (var i=3;i>=0;i--) {
+				for (var j=3;j>=0;j--) {
+					if(data[i][j]!=0){
+						for(var k=j;k<3;k++){
+							if(data[i][k+1]==0){
+								data[i][k+1]=data[i][k]
+								data[i][k]=0;
+							}else if(data[i][k]==data[i][k+1]){
+								data[i][k+1] +=data[i][k];
+								data[i][k]=0;
+								if(data[i][k+2]!=0 && k<2){
+									break;
+								}
+							}else if(data[i][k]!=data[i][k+1]){
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		//向下移动
+		function moveDown(){
+			for (var j=3;j>=0;j--) {
+				for (var i=3;i>=0;i--) {
+					if(data[i][j]!=0){
+						for(var k=i;k<3;k++){
+							if(data[k+1][j]==0){
+								data[k+1][j]=data[k][j]
+								data[k][j]=0;
+							}else if(data[k][j]==data[k+1][j]){
+								data[k+1][j] +=data[k][j];
+								data[k][j]=0;
+								if(k<2){
+									if(data[k+2][j] != 0){
+										break;
+									}
+								}
+							}else if(data[k][j]!=data[k+1][j]){
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
+			
+	</script>
+</html>
