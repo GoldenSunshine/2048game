@@ -76,8 +76,11 @@
             switch (keyCode) {
                 case 38:
                 	if(none()==false){
-                		if(end() == false){
-                			alert('游戏结束，请重新开始');
+                		if(lend() == false){
+                			if(hend() == false){
+                				alert('游戏结束，请重新开始');
+                				break;
+                			}
                 			break;
                 		}
                 	}
@@ -87,8 +90,11 @@
                     break;
                 case 40:
                 	if(none()==false){
-                		if(end() == false){
-                			alert('游戏结束，请重新开始');
+                		if(lend() == false){
+                			if(hend() == false){
+                				alert('游戏结束，请重新开始');
+                				break;
+                			}
                 			break;
                 		}
                 	}
@@ -98,8 +104,11 @@
                     break;
                 case 37:
                 	if(none()==false){
-                		if(end() == false){
-                			alert('游戏结束，请重新开始');
+                		if(hend() == false){
+                			if(lend() == false){
+                				alert('游戏结束，请重新开始');
+                				break;
+                			}
                 			break;
                 		}
                 	}
@@ -109,8 +118,11 @@
 					break;
 				case 39:
 					if(none()==false){
-                		if(end() == false){
-                			alert('游戏结束，请重新开始');
+                		if(hend() == false){
+                			if(lend() == false){
+                				alert('游戏结束，请重新开始');
+                				break;
+                			}
                 			break;
                 		}
                 	}
@@ -142,8 +154,8 @@
 			}
 			return false;
 		}
-		//判断游戏是否结束
-		function end(){
+		//判断能否横向运动
+		function hend(){
 			var a = 0;
 			var b = 0;
 			for (var i=0;i<4;i++) {
@@ -159,6 +171,12 @@
 					}
 				}
 			}
+			return false;
+		}
+		//判断能否纵向运动
+		function lend(){
+			var a = 0;
+			var b = 0;
 			for (var i=0;i<4;i++) {
 				a = 0 ;
 				for (var j=0;j<4;j++) {
